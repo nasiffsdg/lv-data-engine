@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.infrastructure.invoke.dao.MybatisMsWriteTableDao">
+
+    <resultMap type="com.lv.domain.invoke.MybatisMsWriteTableDo" id="MybatisMsWriteTableMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="projectId" column="project_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="VARCHAR"/>
+        <result property="mapperSimpleClassName" column="mapper_simple_class_name" jdbcType="VARCHAR"/>
+        <result property="mapperMethodName" column="mapper_method_name" jdbcType="VARCHAR"/>
+        <result property="sqlStatement" column="sql_statement" jdbcType="VARCHAR"/>
+        <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
+        <result property="mapperClassName" column="mapper_class_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MybatisMsWriteTableMap">
+        select
+          id, project_id, create_time, update_time, is_deleted, mapper_simple_class_name, mapper_method_name, sql_statement, table_name, mapper_class_name
+        from lv_invoke_mybatis_ms_write_table
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MybatisMsWriteTableMap">
+        select
+          id, project_id, create_time, update_time, is_deleted, mapper_simple_class_name, mapper_method_name, sql_statement, table_name, mapper_class_name
+        from lv_invoke_mybatis_ms_write_table
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="mapperSimpleClassName != null and mapperSimpleClassName != ''">
+                and mapper_simple_class_name = #{mapperSimpleClassName}
+            </if>
+            <if test="mapperMethodName != null and mapperMethodName != ''">
+                and mapper_method_name = #{mapperMethodName}
+            </if>
+            <if test="sqlStatement != null and sqlStatement != ''">
+                and sql_statement = #{sqlStatement}
+            </if>
+            <if test="tableName != null and tableName != ''">
+                and table_name = #{tableName}
+            </if>
+            <if test="mapperClassName != null and mapperClassName != ''">
+                and mapper_class_name = #{mapperClassName}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from lv_invoke_mybatis_ms_write_table
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="mapperSimpleClassName != null and mapperSimpleClassName != ''">
+                and mapper_simple_class_name = #{mapperSimpleClassName}
+            </if>
+            <if test="mapperMethodName != null and mapperMethodName != ''">
+                and mapper_method_name = #{mapperMethodName}
+            </if>
+            <if test="sqlStatement != null and sqlStatement != ''">
+                and sql_statement = #{sqlStatement}
+            </if>
+            <if test="tableName != null and tableName != ''">
+                and table_name = #{tableName}
+            </if>
+            <if test="mapperClassName != null and mapperClassName != ''">
+                and mapper_class_name = #{mapperClassName}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_mybatis_ms_write_table(project_id, create_time, update_time, is_deleted, mapper_simple_class_name, mapper_method_name, sql_statement, table_name, mapper_class_name)
+        values (#{projectId}, #{createTime}, #{updateTime}, #{isDeleted}, #{mapperSimpleClassName}, #{mapperMethodName}, #{sqlStatement}, #{tableName}, #{mapperClassName})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_mybatis_ms_write_table(project_id, create_time, update_time, is_deleted, mapper_simple_class_name, mapper_method_name, sql_statement, table_name, mapper_class_name)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.projectId}, #{entity.createTime}, #{entity.updateTime}, #{entity.isDeleted}, #{entity.mapperSimpleClassName}, #{entity.mapperMethodName}, #{entity.sqlStatement}, #{entity.tableName}, #{entity.mapperClassName})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_mybatis_ms_write_table(project_id, create_time, update_time, is_deleted, mapper_simple_class_name, mapper_method_name, sql_statement, table_name, mapper_class_name)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.projectId}, #{entity.createTime}, #{entity.updateTime}, #{entity.isDeleted}, #{entity.mapperSimpleClassName}, #{entity.mapperMethodName}, #{entity.sqlStatement}, #{entity.tableName}, #{entity.mapperClassName})
+        </foreach>
+        on duplicate key update
+        project_id = values(project_id),
+        create_time = values(create_time),
+        update_time = values(update_time),
+        is_deleted = values(is_deleted),
+        mapper_simple_class_name = values(mapper_simple_class_name),
+        mapper_method_name = values(mapper_method_name),
+        sql_statement = values(sql_statement),
+        table_name = values(table_name),
+        mapper_class_name = values(mapper_class_name)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update lv_invoke_mybatis_ms_write_table
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                is_deleted = #{isDeleted},
+            </if>
+            <if test="mapperSimpleClassName != null and mapperSimpleClassName != ''">
+                mapper_simple_class_name = #{mapperSimpleClassName},
+            </if>
+            <if test="mapperMethodName != null and mapperMethodName != ''">
+                mapper_method_name = #{mapperMethodName},
+            </if>
+            <if test="sqlStatement != null and sqlStatement != ''">
+                sql_statement = #{sqlStatement},
+            </if>
+            <if test="tableName != null and tableName != ''">
+                table_name = #{tableName},
+            </if>
+            <if test="mapperClassName != null and mapperClassName != ''">
+                mapper_class_name = #{mapperClassName},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from lv_invoke_mybatis_ms_write_table where id = #{id}
+    </delete>
+
+</mapper>
+

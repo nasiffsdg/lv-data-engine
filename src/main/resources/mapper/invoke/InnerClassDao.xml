@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.infrastructure.invoke.dao.InnerClassDao">
+
+    <resultMap type="com.lv.domain.invoke.InnerClassDo" id="InnerClassMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="projectId" column="project_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="VARCHAR"/>
+        <result property="innerClassName" column="inner_class_name" jdbcType="VARCHAR"/>
+        <result property="simpleOuterClassName" column="simple_outer_class_name" jdbcType="VARCHAR"/>
+        <result property="outerClassName" column="outer_class_name" jdbcType="VARCHAR"/>
+        <result property="anonymousClass" column="anonymous_class" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="InnerClassMap">
+        select
+          id, project_id, create_time, update_time, is_deleted, inner_class_name, simple_outer_class_name, outer_class_name, anonymous_class
+        from lv_invoke_inner_class
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="InnerClassMap">
+        select
+          id, project_id, create_time, update_time, is_deleted, inner_class_name, simple_outer_class_name, outer_class_name, anonymous_class
+        from lv_invoke_inner_class
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="innerClassName != null and innerClassName != ''">
+                and inner_class_name = #{innerClassName}
+            </if>
+            <if test="simpleOuterClassName != null and simpleOuterClassName != ''">
+                and simple_outer_class_name = #{simpleOuterClassName}
+            </if>
+            <if test="outerClassName != null and outerClassName != ''">
+                and outer_class_name = #{outerClassName}
+            </if>
+            <if test="anonymousClass != null">
+                and anonymous_class = #{anonymousClass}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from lv_invoke_inner_class
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="innerClassName != null and innerClassName != ''">
+                and inner_class_name = #{innerClassName}
+            </if>
+            <if test="simpleOuterClassName != null and simpleOuterClassName != ''">
+                and simple_outer_class_name = #{simpleOuterClassName}
+            </if>
+            <if test="outerClassName != null and outerClassName != ''">
+                and outer_class_name = #{outerClassName}
+            </if>
+            <if test="anonymousClass != null">
+                and anonymous_class = #{anonymousClass}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_inner_class(project_id, create_time, update_time, is_deleted, inner_class_name, simple_outer_class_name, outer_class_name, anonymous_class)
+        values (#{projectId}, #{createTime}, #{updateTime}, #{isDeleted}, #{innerClassName}, #{simpleOuterClassName}, #{outerClassName}, #{anonymousClass})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_inner_class(project_id, create_time, update_time, is_deleted, inner_class_name, simple_outer_class_name, outer_class_name, anonymous_class)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.projectId}, #{entity.createTime}, #{entity.updateTime}, #{entity.isDeleted}, #{entity.innerClassName}, #{entity.simpleOuterClassName}, #{entity.outerClassName}, #{entity.anonymousClass})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_inner_class(project_id, create_time, update_time, is_deleted, inner_class_name, simple_outer_class_name, outer_class_name, anonymous_class)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.projectId}, #{entity.createTime}, #{entity.updateTime}, #{entity.isDeleted}, #{entity.innerClassName}, #{entity.simpleOuterClassName}, #{entity.outerClassName}, #{entity.anonymousClass})
+        </foreach>
+        on duplicate key update
+        project_id = values(project_id),
+        create_time = values(create_time),
+        update_time = values(update_time),
+        is_deleted = values(is_deleted),
+        inner_class_name = values(inner_class_name),
+        simple_outer_class_name = values(simple_outer_class_name),
+        outer_class_name = values(outer_class_name),
+        anonymous_class = values(anonymous_class)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update lv_invoke_inner_class
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                is_deleted = #{isDeleted},
+            </if>
+            <if test="innerClassName != null and innerClassName != ''">
+                inner_class_name = #{innerClassName},
+            </if>
+            <if test="simpleOuterClassName != null and simpleOuterClassName != ''">
+                simple_outer_class_name = #{simpleOuterClassName},
+            </if>
+            <if test="outerClassName != null and outerClassName != ''">
+                outer_class_name = #{outerClassName},
+            </if>
+            <if test="anonymousClass != null">
+                anonymous_class = #{anonymousClass},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from lv_invoke_inner_class where id = #{id}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.infrastructure.invoke.dao.MethodArgGenericsTypeDao">
+
+    <resultMap type="com.lv.domain.invoke.MethodArgGenericsTypeDo" id="MethodArgGenericsTypeMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="projectId" column="project_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="VARCHAR"/>
+        <result property="methodHash" column="method_hash" jdbcType="VARCHAR"/>
+        <result property="simpleClassName" column="simple_class_name" jdbcType="VARCHAR"/>
+        <result property="argSeq" column="arg_seq" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="typeSeq" column="type_seq" jdbcType="INTEGER"/>
+        <result property="simpleGenericsType" column="simple_generics_type" jdbcType="VARCHAR"/>
+        <result property="genericsType" column="generics_type" jdbcType="VARCHAR"/>
+        <result property="fullMethod" column="full_method" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MethodArgGenericsTypeMap">
+        select
+          id, project_id, create_time, update_time, is_deleted, method_hash, simple_class_name, arg_seq, type, type_seq, simple_generics_type, generics_type, full_method
+        from lv_invoke_method_arg_generics_type
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MethodArgGenericsTypeMap">
+        select
+          id, project_id, create_time, update_time, is_deleted, method_hash, simple_class_name, arg_seq, type, type_seq, simple_generics_type, generics_type, full_method
+        from lv_invoke_method_arg_generics_type
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="methodHash != null and methodHash != ''">
+                and method_hash = #{methodHash}
+            </if>
+            <if test="simpleClassName != null and simpleClassName != ''">
+                and simple_class_name = #{simpleClassName}
+            </if>
+            <if test="argSeq != null">
+                and arg_seq = #{argSeq}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="typeSeq != null">
+                and type_seq = #{typeSeq}
+            </if>
+            <if test="simpleGenericsType != null and simpleGenericsType != ''">
+                and simple_generics_type = #{simpleGenericsType}
+            </if>
+            <if test="genericsType != null and genericsType != ''">
+                and generics_type = #{genericsType}
+            </if>
+            <if test="fullMethod != null and fullMethod != ''">
+                and full_method = #{fullMethod}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from lv_invoke_method_arg_generics_type
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+            <if test="methodHash != null and methodHash != ''">
+                and method_hash = #{methodHash}
+            </if>
+            <if test="simpleClassName != null and simpleClassName != ''">
+                and simple_class_name = #{simpleClassName}
+            </if>
+            <if test="argSeq != null">
+                and arg_seq = #{argSeq}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="typeSeq != null">
+                and type_seq = #{typeSeq}
+            </if>
+            <if test="simpleGenericsType != null and simpleGenericsType != ''">
+                and simple_generics_type = #{simpleGenericsType}
+            </if>
+            <if test="genericsType != null and genericsType != ''">
+                and generics_type = #{genericsType}
+            </if>
+            <if test="fullMethod != null and fullMethod != ''">
+                and full_method = #{fullMethod}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_method_arg_generics_type(project_id, create_time, update_time, is_deleted, method_hash, simple_class_name, arg_seq, type, type_seq, simple_generics_type, generics_type, full_method)
+        values (#{projectId}, #{createTime}, #{updateTime}, #{isDeleted}, #{methodHash}, #{simpleClassName}, #{argSeq}, #{type}, #{typeSeq}, #{simpleGenericsType}, #{genericsType}, #{fullMethod})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_method_arg_generics_type(project_id, create_time, update_time, is_deleted, method_hash, simple_class_name, arg_seq, type, type_seq, simple_generics_type, generics_type, full_method)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.projectId}, #{entity.createTime}, #{entity.updateTime}, #{entity.isDeleted}, #{entity.methodHash}, #{entity.simpleClassName}, #{entity.argSeq}, #{entity.type}, #{entity.typeSeq}, #{entity.simpleGenericsType}, #{entity.genericsType}, #{entity.fullMethod})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into lv_invoke_method_arg_generics_type(project_id, create_time, update_time, is_deleted, method_hash, simple_class_name, arg_seq, type, type_seq, simple_generics_type, generics_type, full_method)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.projectId}, #{entity.createTime}, #{entity.updateTime}, #{entity.isDeleted}, #{entity.methodHash}, #{entity.simpleClassName}, #{entity.argSeq}, #{entity.type}, #{entity.typeSeq}, #{entity.simpleGenericsType}, #{entity.genericsType}, #{entity.fullMethod})
+        </foreach>
+        on duplicate key update
+        project_id = values(project_id),
+        create_time = values(create_time),
+        update_time = values(update_time),
+        is_deleted = values(is_deleted),
+        method_hash = values(method_hash),
+        simple_class_name = values(simple_class_name),
+        arg_seq = values(arg_seq),
+        type = values(type),
+        type_seq = values(type_seq),
+        simple_generics_type = values(simple_generics_type),
+        generics_type = values(generics_type),
+        full_method = values(full_method)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update lv_invoke_method_arg_generics_type
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                is_deleted = #{isDeleted},
+            </if>
+            <if test="methodHash != null and methodHash != ''">
+                method_hash = #{methodHash},
+            </if>
+            <if test="simpleClassName != null and simpleClassName != ''">
+                simple_class_name = #{simpleClassName},
+            </if>
+            <if test="argSeq != null">
+                arg_seq = #{argSeq},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="typeSeq != null">
+                type_seq = #{typeSeq},
+            </if>
+            <if test="simpleGenericsType != null and simpleGenericsType != ''">
+                simple_generics_type = #{simpleGenericsType},
+            </if>
+            <if test="genericsType != null and genericsType != ''">
+                generics_type = #{genericsType},
+            </if>
+            <if test="fullMethod != null and fullMethod != ''">
+                full_method = #{fullMethod},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from lv_invoke_method_arg_generics_type where id = #{id}
+    </delete>
+
+</mapper>
+
