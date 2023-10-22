@@ -1,5 +1,8 @@
 package com.lv.common.constants;
 
+import com.lv.common.exceptions.BaseCustomerException;
+import com.lv.common.exceptions.CommonException;
+
 /**
  * 响应状态码
  * @author QiangZai
@@ -11,17 +14,17 @@ public interface ResponseCode {
     /**
      * 响应成功
      */
-    Integer SUCCESS = 200;
+    Integer SUCCESS = 20000;
     /**
      * 默认响应失败
      */
-    Integer ERROR = 500;
+    Integer ERROR = CommonException.COMMON_FAIL_CODE;
     /**
      * 未授权
      */
-    Integer UNAUTHORIZED = 401;
+    Integer UNAUTHORIZED = CommonException.UNAUTHORIZED_CODE;
     /**
      * 无权限
      */
-    Integer FORBIDDEN = 403;
+    Integer FORBIDDEN = CommonException.FORBIDDEN_CODE;
 }

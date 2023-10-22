@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @author lvxueqiang
  */
 @Configuration
-@MapperScan({"com.lv.infrastructure.**.dao"})
+@MapperScan({"com.lv.**.infrastructure.**.dao"})
 public class MybatisConfig {
 
 }

@@ -1,8 +1,8 @@
 package com.lv.common.domain;
 
 import com.lv.common.constants.ResponseCode;
+import lombok.Builder;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2023/7/14 1:04 AM
  */
 @Data
+@Builder
 public class ResponseInfo {
 
     /**
@@ -22,42 +23,46 @@ public class ResponseInfo {
     /**
      * 信息
      */
-    private String msg;
+    private String msg ;
 
     /**
      * 数据
      */
     private Object data;
 
-    private ResponseInfo(Integer code, String msg, Object data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
+
+    /**
+     * 成功响应
+     * @return 返回 json
+     */
+    public static ResponseInfo success() {
+        return ResponseInfo.builder().code(ResponseCode.SUCCESS).build();
     }
-
-    private ResponseInfo(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
-    public ResponseInfo(Integer code) {
-        this.code = code;
-    }
-
-
     /**
      * 响应成功
      * @param data 数据
      * @return 返回 json
      */
     public static ResponseInfo success(Object data) {
-        return new ResponseInfo(ResponseCode.SUCCESS, StringUtils.EMPTY, data);
+        return ResponseInfo.builder().code(ResponseCode.SUCCESS).data(data).build();
     }
-    public static ResponseInfo success() {
-        return new ResponseInfo(ResponseCode.SUCCESS);
-    }
+
+    /**
+     *
+     * @param data 数据
+     * @param msg 信息
+     * @return 返回 json
+     */
     public static ResponseInfo success(Object data, String msg) {
-        return new ResponseInfo(ResponseCode.SUCCESS, msg, data);
+        return ResponseInfo.builder().code(ResponseCode.SUCCESS).msg(msg).data(data).build();
+    }
+    /**
+     *
+     * @param msg 信息
+     * @return 返回 json
+     */
+    public static ResponseInfo success(String msg) {
+        return ResponseInfo.builder().code(ResponseCode.SUCCESS).msg(msg).build();
     }
 
 
@@ -66,11 +71,16 @@ public class ResponseInfo {
      * @param msg 失败消息
      */
     public static ResponseInfo fail(String msg) {
-        return new ResponseInfo(ResponseCode.ERROR, msg);
+        return ResponseInfo.builder().code(ResponseCode.ERROR).msg(msg).build();
     }
 
+    /**
+     * 响应失败
+     * @param code 失败码
+     * @param msg 消息
+     */
     public static ResponseInfo fail(Integer code, String msg) {
-        return new ResponseInfo(code, msg);
+        return ResponseInfo.builder().code(code).msg(msg).build();
     }
 
     /**
