@@ -2,15 +2,15 @@ spring:
   # 应用
   application:
     name: data-server
-  # 环境
-  environment:
-    active: test
   # 服务治理
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
       config:
-        group: dev
+        file-extension: yml
+        shared-configs:
+          - data-id: data-server.yml
+            refresh: true
 
   # 数据源
   datasource:
@@ -41,32 +41,8 @@ spring:
           max-idle: 8
           min-idle: 0
 
-# dubbo
-dubbo:
-  application:
-    name: auth-server
-  scan:
-    base-packages: com.lv.service
-  protocol:
-    port: 20881
-    name: dubbo
-  registry:
-    address: nacos://127.0.0.1:8848
-
 # 日志
 logging:
   level:
     root: info
 
-# mybatis
-mybatis:
-  mapper-locations: classpath:**/mapper/*.xml
-
-# 临时文件路径
-file:
-  tempPath: /Users/lvxueqiang/Documents/workspace/java/lv-data-ddd/src/main/resources/
-
-# JACG 调用链解析配置
-jacg:
-  db:
-    insertBranchSize: 10
